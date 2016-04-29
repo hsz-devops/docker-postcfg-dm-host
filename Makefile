@@ -8,6 +8,8 @@ BUILD_CACHE=--no-cache
 
 default:
 
+run: build postcfg-dm
+
 # --------------------------------------------------------------------------
 postcfg-dm:
 	docker-compose run --rm $(DC_SVC)

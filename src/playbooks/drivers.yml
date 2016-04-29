@@ -38,15 +38,23 @@
 - name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin (1)"
   become: true
   get_url:
-    url: https://github.com/gondor/docker-volume-netshare/releases/download/v0.16/docker-volume-netshare_0.16_amd64.deb
-    dest: /usr/local/src/hsz/docker-volume-netshare_0.16_amd64.deb
-  register: netshare_status
+    url: https://github.com/gondor/docker-volume-netshare/releases/download/v{{ VERSIONS['d-v-netshare'] |mandatory }}/docker-volume-netshare_{{ VERSIONS['d-v-netshare'] |mandatory }}_amd64.deb
+    dest: /usr/local/src/hsz/docker-volume-netshare_{{ VERSIONS['d-v-netshare'] |mandatory }}_amd64.deb
+  register: netshare_downloaded
 
-- name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin (1)"
+- name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin (2)"
   become: true
   apt:
-    deb: /usr/local/src/hsz/docker-volume-netshare_0.16_amd64.deb
-  when: netshare_status.changed
+    deb: /usr/local/src/hsz/docker-volume-netshare_{{ VERSIONS['d-v-netshare'] |mandatory }}_amd64.deb
+  when: netshare_downloaded.changed
+  register: netshare_installed
+
+- name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin (3)"
+  become: true
+  service:
+    name:   docker-volume-netshare
+    state: started
+  when: ((netshare_downloaded is defined) and netshare_downloaded.changed) or ((netshare_installed is defined) or netshare_installed.changed)
 
 # # ---------------------------------------------------------------
 # - name: "Docker Volume Driver for Azure File Storage"

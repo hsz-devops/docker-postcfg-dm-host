@@ -161,5 +161,9 @@
 - name: Docker drivers
   hosts: all
   gather_facts: False
+  vars:
+    - VERSIONS:
+        "d-v-netshare": "0.16"
+
   tasks:
     - include: ./drivers.yml
