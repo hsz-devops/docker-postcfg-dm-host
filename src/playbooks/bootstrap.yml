@@ -6,11 +6,11 @@
   hosts: all
   gather_facts: True
   tasks:
-    - name: dump info for troubleshooting purposes
-      become: true
-      setup:
-      register: host_data_out
-
+    # - name: dump info for troubleshooting purposes
+    #   become: true
+    #   setup:
+    #   register: host_data_out
+    #
     # - debug: msg={{ host_data_out }}
 
     - name: check docker-engine is already installed
@@ -58,100 +58,108 @@
 
     # https://docs.docker.com/engine/installation/linux/ubuntulinux/
 
-    # ---------------------------------------------------------------
-    # optional configs: Create a Docker group
+    # # ---------------------------------------------------------------
+    # # optional configs: Create a Docker group
 
-    - name: Make sure docker group is created
-      become: true
-      group:
-        name:  docker
-        state: present
-
-    - name: Make sure current user is in docker group (if is not the root user)
-      become: true
-      user:
-        name:  "{{ ansible_user_id }}"
-        groups: docker
-        append: yes
-      when:
-        "'{{ ansible_user_id }}' != 'root'"
-
-    # ---------------------------------------------------------------
-    # optional configs: Adjust memory and swap accounting
-
-    - name: Set memory limit in GRUB
-      become: true
-      lineinfile: >
-        dest=/etc/default/grub
-        regexp=^GRUB_CMDLINE_LINUX_DEFAULT
-        line='GRUB_CMDLINE_LINUX_DEFAULT="cgroup_enable=memory swapaccount=1"'
-
-    - name: Load new GRUB config
-      become: true
-      command: update-grub
-
-    # ---------------------------------------------------------------
-    # optional configs: Enable UFW forwarding
-
-    - name: enable DEFAULT_FORWARD_POLICY
-      lineinfile:
-        dest: "/etc/default/ufw"
-        backup: yes
-        regexp: '^(.*)DEFAULT_FORWARD_POLICY(.*)$'
-        line:   'DEFAULT_FORWARD_POLICY="ACCEPT"'
-
-    - name: Reset UFW firewall
-      become: true
-      ufw:
-        state=reset
-
-    - name: Allow SSH access on instance
-      become: true
-      ufw: >
-        rule=allow
-        name=OpenSSH
-
-    - name: Open Docker daemon, HTTP(S), and Swarm ports
-      become: true
-      ufw: >
-        rule=allow
-        port={{ item }}
-        proto=tcp
-      with_items:
-        - 80     # Default HTTP port
-        - 443    # Default HTTPS port
-        #- 2375   # Docker daemon API port (non-TLS)
-        - 2376   # Docker daemon API port (TLS)
-        - 3376   # Swarm API port
-        #- 7946   # Serf port (libnetwork)
-
-    - name: Open VXLAN and Serf UDP ports
-      become: true
-      ufw: >
-        rule=allow
-        port={{ item }}
-        proto=udp
-      with_items:
-        - 7946 # Serf
-        - 4789 # VXLAN
-
-    - name: Set to deny incoming requests by default
-      become: true
-      ufw: >
-        default=deny
-
-    - name: Turn on UFW
-      become: true
-      ufw: >
-        state=reloade
-
-    # ---------------------------------------------------------------
-    #
-    # - name: Set hostname
+    # - name: Make sure docker group is created
     #   become: true
-    #   hostname: name={{ inventory_hostname }}
+    #   group:
+    #     name:  docker
+    #     state: present
 
-    # - name: Set properly in /etc/hosts
+    # - name: Make sure current user is in docker group (if is not the root user)
     #   become: true
-    #   lineinfile: dest=/etc/hosts regexp='^127\.0\.0\.1' line='127.0.0.1 {{ inventory_hostname }}' owner=root group=root mode=0644
+    #   user:
+    #     name:  "{{ ansible_user_id }}"
+    #     groups: docker
+    #     append: yes
+    #   when:
+    #     "'{{ ansible_user_id }}' != 'root'"
 
+    # # ---------------------------------------------------------------
+    # # optional configs: Adjust memory and swap accounting
+
+    # - name: Set memory limit in GRUB
+    #   become: true
+    #   lineinfile: >
+    #     dest=/etc/default/grub
+    #     regexp=^GRUB_CMDLINE_LINUX_DEFAULT
+    #     line='GRUB_CMDLINE_LINUX_DEFAULT="cgroup_enable=memory swapaccount=1"'
+    #   register: grub_resutls
+
+    # - name: Load new GRUB config
+    #   become: true
+    #   command: update-grub
+    #   when: grub_resutls.changed
+
+    # # ---------------------------------------------------------------
+    # # optional configs: Enable UFW forwarding
+
+    # - name: enable DEFAULT_FORWARD_POLICY
+    #   lineinfile:
+    #     dest: "/etc/default/ufw"
+    #     backup: yes
+    #     regexp: '^(.*)DEFAULT_FORWARD_POLICY(.*)$'
+    #     line:   'DEFAULT_FORWARD_POLICY="ACCEPT"'
+
+    # - name: Reset UFW firewall
+    #   become: true
+    #   ufw:
+    #     state=reset
+
+    # - name: Allow SSH access on instance
+    #   become: true
+    #   ufw: >
+    #     rule=allow
+    #     name=OpenSSH
+
+    # - name: Open TCP ports
+    #   become: true
+    #   ufw: >
+    #     rule=allow
+    #     port={{ item }}
+    #     proto=tcp
+    #   with_items:
+    #     - 80     # Default HTTP port
+    #     - 443    # Default HTTPS port
+    #     #- 2375   # Docker daemon API port (non-TLS)
+    #     - 2376   # Docker daemon API port (TLS)
+    #     - 6783   # Weave control
+    #     - 3376   # Swarm API port
+
+    # - name: Open UDP ports
+    #   become: true
+    #   ufw: >
+    #     rule=allow
+    #     port={{ item }}
+    #     proto=udp
+    #   with_items:
+    #     - 4789 # VXLAN
+    #     - 6783 # Weave - data
+    #     - 6784 # Weave - data
+
+    # - name: Set to deny incoming requests by default
+    #   become: true
+    #   ufw: >
+    #     default=deny
+
+    # - name: Turn on UFW
+    #   become: true
+    #   ufw: >
+    #     state=reloaded
+
+    # # ---------------------------------------------------------------
+    # #
+    # # - name: Set hostname
+    # #   become: true
+    # #   hostname: name={{ inventory_hostname }}
+
+    # # - name: Set properly in /etc/hosts
+    # #   become: true
+    # #   lineinfile: dest=/etc/hosts regexp='^127\.0\.0\.1' line='127.0.0.1 {{ inventory_hostname }}' owner=root group=root mode=0644
+
+- name: Docker drivers
+  hosts: all
+  gather_facts: False
+  tasks:
+    - include: ./drivers.yml
