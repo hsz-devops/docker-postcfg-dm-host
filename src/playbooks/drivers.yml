@@ -25,14 +25,16 @@
   when: rexray_download_status.changed
 
 # ---------------------------------------------------------------
-- name: pre-requisites for NetShare plugin
+- name: pre-requisites for NFS/CIFS plugin
   become: true
   apt:
     name: "{{ item }}"
     state: latest
   with_items:
     - nfs-common
+    - cifs-utils
 
+# ---------------------------------------------------------------
 - name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin (1)"
   become: true
   get_url:
@@ -45,3 +47,8 @@
   apt:
     deb: /usr/local/src/hsz/docker-volume-netshare_0.16_amd64.deb
   when: netshare_status.changed
+
+# # ---------------------------------------------------------------
+# - name: "Docker Volume Driver for Azure File Storage"
+#   become: true
+#   ....
