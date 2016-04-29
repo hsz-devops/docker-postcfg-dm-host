@@ -1,0 +1,17 @@
+---
+version: '2'
+services:
+  postcfg-docker-host:
+    build: .
+
+    image: highskillz/postcfg-ubu1404-docker-machine
+
+    container_name: postcfg-ubu1404-dm   # prevent scaling out
+
+    # based on:
+    #   https://github.com/nathanleclaire/dockerfiles/tree/master/ansible
+    #
+    # "host" networking means ssh to localhost is ssh to docker-host (!!!)
+    network_mode: "host"
+    volumes:
+      - /root/.ssh:/hostssh
