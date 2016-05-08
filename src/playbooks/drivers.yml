@@ -5,6 +5,19 @@
     path: /usr/local/src/hsz
     state: directory
 
+# weave
+# flannel
+
+# ---------------------------------------------------------------
+- name: pre-requisites for NFS/CIFS plugin
+  become: true
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - nfs-common
+    - cifs-utils
+
 # ---------------------------------------------------------------
 # - name: "REX-Ray: vendor agnostic storage orchestration engine."
 #   become: true
@@ -25,16 +38,7 @@
   when: rexray_download_status.changed
 
 # ---------------------------------------------------------------
-- name: pre-requisites for NFS/CIFS plugin
-  become: true
-  apt:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - nfs-common
-    - cifs-utils
-
-# ---------------------------------------------------------------
+# https://dzone.com/articles/mount-aws-efs-nfs-or-cifssamba-volumes-in-docker
 - name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin (1)"
   become: true
   get_url:

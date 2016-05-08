@@ -1,4 +1,4 @@
-DH_ID=highskillz/postcfg-ubu1404-docker-machine
+# DH_ID=highskillz/postcfg-ubu1404-docker-machine
 DC_SVC=postcfg-docker-host
 
 TIMESTAMP=$(shell date +"%Y%m%d_%H%M%S")
@@ -45,3 +45,4 @@ list:
 # --------------------------------------------------------------------------
 shell:
 	docker-compose run --rm --entrypoint bash $(DC_SVC)
+
