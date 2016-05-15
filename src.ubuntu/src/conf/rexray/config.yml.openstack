@@ -1,0 +1,71 @@
+---
+rexray:
+  logLevel: warn
+  storageDrivers:
+    - openstack
+
+  docker:
+    size:    32
+    fsType:  ext4
+  volume:
+    create:
+      disable: false
+    mount:
+      preempt: false
+    path:
+      disableCache: true
+    remove:
+      disable: true
+    unmount:
+      ignoreUsedCount: false
+#
+#  aws:
+#    accessKey: MyAccessKey
+#    secretKey: MySecretKey
+#    region:    USNW
+#  virtualbox:
+#    endpoint:       http://10.0.2.2:18083
+#    tls:            false
+#    volumePath:     $HOME/Repos/vagrant/rexray/Volumes
+#    controllerName: SATA
+openstack:
+  authUrl: https://authUrl:35357/v2.0/
+  userName: username
+  tenantName: tenantName
+  regionName: regionName
+#
+linux:
+  volume:
+    rootPath: /data.hsz
+    fileMode: 0700
+
+# --------------------------------------------------------------------------------------------------
+#
+# https://github.com/emccode/rexray/blob/509b5bebd5b99175e9f51b4248886c56bb5ac3c3/.docs/user-guide/config.md#configuration-properties
+#
+# The rule for environment variables is as follows:
+#
+# Each nested level becomes a part of the environment variable name followed by an underscore _ except for the terminating part.
+# The entire environment variable name is uppercase.
+#
+
+#
+# REXRAY_STORAGEDRIVERS=ec2 openstack gce
+
+# Property Name            Environment Variable     CLI Flag
+#
+# rexray.logLevel          REXRAY_LOGLEVEL          --logLevel
+# rexray.osDrivers         REXRAY_OSDRIVERS         --osDrivers
+# rexray.storageDrivers    REXRAY_STORAGEDRIVERS    --storageDrivers
+# rexray.volumeDrivers     REXRAY_VOLUMEDRIVERS     --volumeDrivers
+#
+# aws.accessKey            AWS_ACCESSKEY            --awsAccessKey
+# aws.secretKey            AWS_SECRETKEY            --awsSecretKey
+# aws.region               AWS_REGION               --awsRegion
+#
+# openstack.authUrl        OPENSTACK_AUTHURL        ...
+# openstack.username       OPENSTACK_USERNAME       ...
+# openstack.tenantName     OPENSTACK_TENANTNAME     ...
+# openstack.regionName     OPENSTACK_REGIONNAME     ...
+
+# https://github.com/emccode/rexray/blob/509b5bebd5b99175e9f51b4248886c56bb5ac3c3/.docs/user-guide/schedulers.md#docker

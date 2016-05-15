@@ -5,6 +5,18 @@
       - ansible_machine == "x86_64"
 
 # ---------------------------------------------------------------
+# This should allow us to do ...
+#
+# docker volume create -d cifs \
+#         --name my-server.domain.com/myshare \
+#         --opt username=myusername \
+#         --opt password=mypass \
+#
+# docker run -it --rm \
+#         -v my-server.domain.com/myshare:/mount2 \
+#         ubuntu \
+#         /bin/bash \
+## ---------------------------------------------------------------
 # https://dzone.com/articles/mount-aws-efs-nfs-or-cifssamba-volumes-in-docker
 - name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin  (0: check installed)"
   command: dpkg-query -l docker-volume-netshare
@@ -37,3 +49,16 @@
   when:
     - ((netshare_downloaded is defined) and netshare_downloaded.changed) or ((netshare_installed is defined) or netshare_installed.changed)
 
+# ---------------------------------------------------------------
+- name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin (4: default CIFS)"
+  become: true
+  lineinfile:
+    dest: /etc/default/docker-volume-netshare
+    regexp: '^DKV_NETSHARE_OPTS='
+    line:   'DKV_NETSHARE_OPTS="cifs"'
+    state:  present
+
+    name:   docker-volume-netshare
+    state: started
+  when:
+    - ((netshare_downloaded is defined) and netshare_downloaded.changed) or ((netshare_installed is defined) or netshare_installed.changed)

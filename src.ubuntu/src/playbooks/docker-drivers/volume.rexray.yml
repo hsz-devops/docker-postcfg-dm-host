@@ -14,7 +14,7 @@
 - name: "REX-Ray: vendor agnostic storage orchestration engine (1: download)"
   become: true
   get_url:
-    url: https://dl.bintray.com/emccode/rexray/install
+    url: https://dl.bintray.com/emccode/rexray/install -s stable
     dest: /usr/local/src/hsz/rex-ray-install.sh
   register: rexray_download_status
   when:
