@@ -1,0 +1,39 @@
+---
+
+- assert:
+    that:
+      - ansible_machine == "x86_64"
+
+# ---------------------------------------------------------------
+# https://dzone.com/articles/mount-aws-efs-nfs-or-cifssamba-volumes-in-docker
+- name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin  (0: check installed)"
+  command: dpkg-query -l docker-volume-netshare
+  register: netshare_installed_status
+  changed_when: false
+
+- name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin (1: download)"
+  become: true
+  get_url:
+    url: https://github.com/ContainX/docker-volume-netshare/releases/download/v{{ VERSIONS['d-v-netshare'] |mandatory }}/docker-volume-netshare_{{ VERSIONS['d-v-netshare'] |mandatory }}_amd64.deb
+    dest: /usr/local/src/hsz/docker-volume-netshare_{{ VERSIONS['d-v-netshare'] |mandatory }}_amd64.deb
+  when:
+    - not (netshare_installed_status.rc == 0)
+  register: netshare_downloaded
+
+- name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin (2: install)"
+  become: true
+  apt:
+    deb: /usr/local/src/hsz/docker-volume-netshare_{{ VERSIONS['d-v-netshare'] |mandatory }}_amd64.deb
+  when:
+    - not (netshare_installed_status.rc == 0)
+    - (netshare_downloaded.rc == 0)
+  register: netshare_installed
+
+- name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin (3: run)"
+  become: true
+  service:
+    name:   docker-volume-netshare
+    state: started
+  when:
+    - ((netshare_downloaded is defined) and netshare_downloaded.changed) or ((netshare_installed is defined) or netshare_installed.changed)
+

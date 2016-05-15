@@ -11,6 +11,10 @@ if [[ ! -d /hostssh ]]; then
     exit 1
 fi
 
+if [ "${ANSIBLE_DEBUG}" == "1" ]; then
+    ANSIBLE_OPTS_EXTRA=-vvvv
+fi
+
 # Generate temporary SSH key to allow access to the host machine.
 mkdir -p /root/.ssh
 ssh-keygen -f /root/.ssh/id_rsa -P ""
@@ -21,6 +25,6 @@ cat /root/.ssh/id_rsa.pub >>/hostssh/authorized_keys
 
 # since we are running in the hosts networking stack (!!!) localhost is the host (!!!)
 ansible all -i "localhost," -m raw -a "apt-get install -y python-minimal"
-ansible-playbook -i "localhost," "$@"
+ansible-playbook ${ANSIBLE_OPTS_EXTRA} -i "localhost," "$@"
 
 mv /hostssh/authorized_keys.bak /hostssh/authorized_keys

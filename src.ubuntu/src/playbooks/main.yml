@@ -22,12 +22,13 @@
         that:
           - "'{{ ansible_os_family }}'            == 'Debian'"
           - "'{{ ansible_distribution }}'         == 'Ubuntu'"
-          - "'{{ ansible_distribution_version }}' == '14.04'"
+          - ("'{{ ansible_distribution_version }}' == '14.04'" or
+             "'{{ ansible_distribution_version }}' == '16.04'")
           - "{{ ansible_virtualization_type is not defined }} or ('{{ ansible_virtualization_type }}' != 'docker')"
           #- "not ('{{ ansible_virtualization_type }}' == 'docker')"
           #- not false
 
-- name: Post-config for newly installed Ubuntu 14.04 via docker-machine
+- name: Post-config for newly installed Ubuntu 14.04/16.04 via docker-machine
   hosts: all
   gather_facts: False
   tasks:
@@ -165,6 +166,6 @@
     - path_docker_plugins: "/usr/local/bin"
     - VERSIONS:
         "d-v-netshare": "0.16"
-
+        "d-v-azurefile": "0.2.1"
   tasks:
-    - include: ./drivers.yml
+    - include: ./docker-drivers/volume.yml

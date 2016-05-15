@@ -1,0 +1,25 @@
+---
+version: '2'
+services:
+  postcfg-docker-host:
+    build: .
+
+    image: highskillz/postcfg-ubuntu-docker-machine-host
+
+    container_name: postcfg-ubuntu-dm-host   # prevent scaling out
+
+    # based on:
+    #   https://github.com/nathanleclaire/dockerfiles/tree/master/ansible
+    #
+    # "host" networking means ssh to localhost is ssh to docker-host (!!!)
+    network_mode: "host"
+    volumes:
+      - /root/.ssh:/hostssh
+      - postcfg_logs:/var/log/ansible
+
+volumes:
+  # we want to persist the logs
+  postcfg_logs:
+    external:
+        name: postcfg-logs
+        # docker volume create --driver=local --name=postcfg-logs

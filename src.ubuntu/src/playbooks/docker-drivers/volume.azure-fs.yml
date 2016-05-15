@@ -1,0 +1,19 @@
+---
+
+- assert:
+    that:
+      - ansible_machine == "x86_64"
+
+# ---------------------------------------------------------------
+# https://bitbucket.org/kvaes/azure-scriptbin/src/888d4ff75d84839c8643fe0d9c49d95cd41c9a39/azurefile-dockervolumedriver/azurefile.sh?at=master&fileviewer=file-view-default
+- name: "Docker Volume Driver for Azure File Storage (1)"
+  become: true
+  get_url:
+    url: https://github.com/Azure/azurefile-dockervolumedriver/releases/download/{{ VERSIONS['d-v-azurefile'] |mandatory }}/azurefile-dockervolumedriver
+    dest: "{{ path_docker_plugins |mandatory }}/azurefile-dockervolumedriver"
+    mode: "a+x"
+  register: azurefile_downloaded
+
+
+
+

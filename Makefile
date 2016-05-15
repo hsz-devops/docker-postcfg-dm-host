@@ -1,10 +1,11 @@
-# DH_ID=highskillz/postcfg-ubu1404-docker-machine
+# v1.2.3    2016-05-09     webmaster@highskillz.com
+
+TAG_VERSION=160515a
+
+DH_ID=highskillz/postcfg-ubuntu-docker-machine-host
 DC_SVC=postcfg-docker-host
 
 TIMESTAMP=$(shell date +"%Y%m%d_%H%M%S")
-
-BUILD_CACHE=--no-cache
-# --force-rm
 
 default:
 
@@ -12,11 +13,17 @@ run: build postcfg-dm
 
 # --------------------------------------------------------------------------
 postcfg-dm:
+	pushd src.ubuntu ;\
 	docker-compose run --rm $(DC_SVC)
 
 # --------------------------------------------------------------------------
+rebuild:
+	pushd src.ubuntu ;\
+	docker-compose build --no-cache $(DC_SVC)
+
 build:
-	docker-compose build $(BUILD_CACHE) $(DC_SVC)
+	pushd src.ubuntu ;\
+	docker-compose build $(DC_SVC)
 
 # --------------------------------------------------------------------------
 d-pull:
@@ -26,8 +33,6 @@ d-push:
 	docker push $(DH_ID)
 
 # --------------------------------------------------------------------------
-d-rmi: clean-images clean-junk
-
 clean-junk:
 	docker rm  `docker ps -aq -f status=exited`      || true
 	docker rmi `docker images -q -f dangling=true`   || true
@@ -35,6 +40,8 @@ clean-junk:
 
 clean-images:
 	docker rmi $(DH_ID)        || true
+
+d-rmi: clean-images clean-junk
 
 # --------------------------------------------------------------------------
 list:
@@ -44,5 +51,6 @@ list:
 
 # --------------------------------------------------------------------------
 shell:
+	pushd src.ubuntu ;\
 	docker-compose run --rm --entrypoint bash $(DC_SVC)
 

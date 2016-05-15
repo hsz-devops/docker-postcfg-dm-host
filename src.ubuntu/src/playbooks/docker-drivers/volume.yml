@@ -1,0 +1,24 @@
+---
+
+- name: prepare folder structure
+  file:
+    path: /usr/local/src/hsz
+    state: directory
+
+# weave
+# flannel
+
+# ---------------------------------------------------------------
+- name: pre-requisites for NFS/CIFS plugin
+  become: true
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - nfs-common
+    - cifs-utils
+
+# ---------------------------------------------------------------
+- include: ./volume.rexray.yml
+- include: ./volume.netshare.yml
+- include: ./volume.azure-fs.yml
