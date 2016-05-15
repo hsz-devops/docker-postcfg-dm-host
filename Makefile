@@ -14,23 +14,26 @@ run: build postcfg-dm
 # --------------------------------------------------------------------------
 postcfg-dm:
 	pushd src.ubuntu ;\
-	docker-compose run --rm $(DC_SVC)
+	docker-compose run --rm ${DC_SVC}
 
 # --------------------------------------------------------------------------
 rebuild:
 	pushd src.ubuntu ;\
-	docker-compose build --no-cache $(DC_SVC)
+	TAG_VERSION=${TAG_VERSION} \
+		docker-compose build --no-cache ${DC_SVC}
 
 build:
 	pushd src.ubuntu ;\
-	docker-compose build $(DC_SVC)
+	TAG_VERSION=${TAG_VERSION} \
+		docker-compose build ${DC_SVC}
 
 # --------------------------------------------------------------------------
 d-pull:
-	docker pull $(DH_ID)
+	docker pull ${DH_ID}
 
 d-push:
-	docker push $(DH_ID)
+	docker push ${DH_ID}
+	docker push ${DH_ID}:${TAG_VERSION}
 
 # --------------------------------------------------------------------------
 clean-junk:
@@ -39,7 +42,7 @@ clean-junk:
 	docker volume rm `docker volume ls -qf dangling=true`   || true
 
 clean-images:
-	docker rmi $(DH_ID)        || true
+	docker rmi ${DH_ID}        || true
 
 d-rmi: clean-images clean-junk
 
@@ -52,5 +55,5 @@ list:
 # --------------------------------------------------------------------------
 shell:
 	pushd src.ubuntu ;\
-	docker-compose run --rm --entrypoint bash $(DC_SVC)
+	docker-compose run --rm --entrypoint bash ${DC_SVC}
 

@@ -5,6 +5,7 @@ services:
     build: .
 
     image: highskillz/postcfg-ubuntu-docker-machine-host
+    image: highskillz/postcfg-ubuntu-docker-machine-host:${TAG_VERSION}
 
     container_name: postcfg-ubuntu-dm-host   # prevent scaling out
 
