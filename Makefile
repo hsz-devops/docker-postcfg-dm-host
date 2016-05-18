@@ -1,6 +1,6 @@
-# v1.2.3    2016-05-09     webmaster@highskillz.com
+# v1.2.4    2016-05-18     webmaster@highskillz.com
 
-TAG_VERSION=160515a
+TAG_VERSION=160518a
 
 DH_ID=highskillz/postcfg-ubuntu-docker-machine-host
 DC_SVC=postcfg-docker-host
