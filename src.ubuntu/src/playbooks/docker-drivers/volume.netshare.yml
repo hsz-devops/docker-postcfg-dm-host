@@ -41,24 +41,23 @@
     - (netshare_downloaded.rc == 0)
   register: netshare_installed
 
-- name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin (3: run)"
-  become: true
-  service:
-    name:   docker-volume-netshare
-    state: started
-  when:
-    - ((netshare_downloaded is defined) and netshare_downloaded.changed) or ((netshare_installed is defined) or netshare_installed.changed)
-
 # ---------------------------------------------------------------
-- name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin (4: default CIFS)"
+- name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin (3: default CIFS)"
   become: true
   lineinfile:
     dest: /etc/default/docker-volume-netshare
     regexp: '^DKV_NETSHARE_OPTS='
     line:   'DKV_NETSHARE_OPTS="cifs"'
     state:  present
+  when:
+    - ((netshare_downloaded is defined) and netshare_downloaded.changed) or ((netshare_installed is defined) or netshare_installed.changed)
+  register: netshare_cfg_changed
 
-    name:   docker-volume-netshare
-    state: started
+# ---------------------------------------------------------------
+- name: "NetShare: Docker NFS, AWS EFS & Samba/CIFS Volume Plugin (4: run)"
+  become: true
+  service:
+    name:  docker-volume-netshare
+    state: "{{ netshare_cfg_changed.changed | ternary('restarted','restarted') }}"
   when:
     - ((netshare_downloaded is defined) and netshare_downloaded.changed) or ((netshare_installed is defined) or netshare_installed.changed)

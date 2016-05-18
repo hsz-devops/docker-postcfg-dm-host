@@ -14,7 +14,8 @@ run: build postcfg-dm
 # --------------------------------------------------------------------------
 postcfg-dm:
 	pushd src.ubuntu ;\
-	docker-compose run --rm ${DC_SVC}
+	TAG_VERSION=${TAG_VERSION} \
+		docker-compose run --rm ${DC_SVC}
 
 # --------------------------------------------------------------------------
 rebuild:
