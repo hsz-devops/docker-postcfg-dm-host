@@ -1,0 +1,4 @@
+[submodule "src.ubuntu/src/roles.dh-utils"]
+	path = src.ubuntu/src/roles.dh-utils
+	url = https://github.com/hsz-devops/ansible-docker-host-utils.git
+	branch = master

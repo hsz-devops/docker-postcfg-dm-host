@@ -165,7 +165,7 @@
   vars:
     - path_docker_plugins: "/usr/local/bin"
     - VERSIONS:
-        "d-v-netshare": "0.16"
+        "d-v-netshare": "0.18"
         "d-v-azurefile": "0.2.1"
   tasks:
     - include: ./docker-drivers/volume.yml

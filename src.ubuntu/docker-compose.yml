@@ -4,10 +4,10 @@ services:
   postcfg-docker-host:
     build: .
 
-    image: highskillz/postcfg-ubuntu-docker-machine-host
-    image: highskillz/postcfg-ubuntu-docker-machine-host:${TAG_VERSION}
+    image: highskillz/docker-postcfg-dm-host
+    image: highskillz/docker-postcfg-dm-host:${TAG_VERSION}
 
-    container_name: postcfg-ubuntu-dm-host   # prevent scaling out
+    container_name: postcfg-dm-host   # prevent scaling out
 
     # based on:
     #   https://github.com/nathanleclaire/dockerfiles/tree/master/ansible
