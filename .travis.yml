@@ -10,5 +10,5 @@ before_install:
   - sudo pip2 install --upgrade pip setuptools wheel
   - sudo pip2 install docker-compose
 
-install:
+scripts:
   - make build
