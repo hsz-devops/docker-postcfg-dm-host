@@ -9,8 +9,7 @@ python:
 #  - docker
 
 before_install:
-  - sudo pip2 install --upgrade pip setuptools wheel docker-compose
-  - docker         --version
+  - pip2 install --upgrade pip setuptools wheel docker-compose
   - docker-compose --version
 
 scripts:
