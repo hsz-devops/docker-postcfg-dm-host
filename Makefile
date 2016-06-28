@@ -1,8 +1,9 @@
-# v1.2.4    2016-05-18     webmaster@highskillz.com
+# v2.0.0    2016-06-10     joaocc-dev@live.com
 
-TAG_VERSION=160518a
+TAG_VERSION=160611m
 
-DH_ID=highskillz/postcfg-ubuntu-docker-machine-host
+# these 2 vars must match the content of docker-compose.yml
+DH_ID=highskillz/docker-postcfg-dm-host
 DC_SVC=postcfg-docker-host
 
 TIMESTAMP=$(shell date +"%Y%m%d_%H%M%S")

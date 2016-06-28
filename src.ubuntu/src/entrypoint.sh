@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # based on:
 # - https://github.com/nathanleclaire/dockerfiles/tree/master/ansible
