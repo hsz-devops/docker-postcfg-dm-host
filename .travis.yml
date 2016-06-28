@@ -3,12 +3,16 @@ language: python
 python:
     - 2.7
 
+sudo: required
+
 services:
   - docker
 
 before_install:
   - sudo pip2 install --upgrade pip setuptools wheel
   - sudo pip2 install docker-compose
+  - docker         --version
+  - docker-compose --version
+  - make build
 
 scripts:
-  - make build
