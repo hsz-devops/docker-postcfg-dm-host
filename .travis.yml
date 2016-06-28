@@ -13,6 +13,13 @@ env:
         DEBIAN_FRONTEND="noninteractive"
 
 install:
+  - |
+cat << EOFxEOF | sudo tee -a /etc/apt/apt.conf.d/local
+Dpkg::Options {
+   "--force-confdef";
+   "--force-confold";
+}
+EOFxEOF
   - sudo apt-get install apt-transport-https ca-certificates
   - curl -sSL https://get.docker.com/ | sudo sh
   - sudo pip2 install --upgrade pip setuptools wheel docker-compose
