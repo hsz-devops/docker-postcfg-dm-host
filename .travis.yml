@@ -8,6 +8,10 @@ sudo: required
 services:
  - docker
 
+env:
+    global:
+        DEBIAN_FRONTEND="noninteractive"
+
 install:
   - sudo apt-get install apt-transport-https ca-certificates
   - curl -sSL https://get.docker.com/ | sudo sh
