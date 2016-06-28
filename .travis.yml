@@ -8,15 +8,11 @@ sudo: required
 services:
  - docker
 
-docker:
-  engine-version: 1.11.2
-  compose-version: 1.7.1
-
 install:
+  - sudo apt-get install apt-transport-https ca-certificates
+  - curl -sSL https://get.docker.com/ | sudo sh
   - sudo pip2 install --upgrade pip setuptools wheel docker-compose
   - sudo docker-compose --version
 
 script:
   - sudo make build
-
-
