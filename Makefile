@@ -1,6 +1,6 @@
 # v2.1.1    2016-06-28     joaocc-dev@live.com
 
-TAG_VERSION=160628b
+TAG_VERSION=160701a
 
 # these 2 vars must match the content of docker-compose.yml
 DH_ID=highskillz/docker-postcfg-dm-host
@@ -17,18 +17,21 @@ run: build postcfg-dm
 postcfg-dm:
 	cd "$(THIS_DIR)src.ubuntu" ;\
 	TAG_VERSION=${TAG_VERSION} \
-		docker-compose run --rm ${DC_SVC}
+		docker-compose up
+		#docker-compose run --rm ${DC_SVC}
 
 # --------------------------------------------------------------------------
 rebuild:
 	cd "$(THIS_DIR)src.ubuntu" ;\
 	TAG_VERSION=${TAG_VERSION} \
-		docker-compose build --no-cache ${DC_SVC}
+		docker-compose build --no-cache
+		#docker-compose build --no-cache ${DC_SVC}
 
 build:
 	cd "$(THIS_DIR)src.ubuntu" ;\
 	TAG_VERSION=${TAG_VERSION} \
-		docker-compose build ${DC_SVC}
+		docker-compose build
+		#docker-compose build ${DC_SVC}
 
 # --------------------------------------------------------------------------
 d-pull:
@@ -56,7 +59,10 @@ list:
 	docker ps -a
 
 # --------------------------------------------------------------------------
-shell:
+shell-vol:
 	cd "$(THIS_DIR)src.ubuntu" ;\
-	docker-compose run --rm --entrypoint bash ${DC_SVC}
+	docker-compose run --rm --entrypoint bash postcfg-dh-drv--vol
 
+shell-sslh:
+	cd "$(THIS_DIR)src.ubuntu" ;\
+	docker-compose run --rm --entrypoint bash postcfg-dh--sslh
