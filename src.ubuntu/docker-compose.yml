@@ -15,8 +15,12 @@ services:
     #
     # "host" networking means ssh to localhost is ssh to docker-host (!!!)
     network_mode: "host"
+
     volumes:
+      # enables access to the docker-host by ansible
       - /root/.ssh:/hostssh
+
+      # persists the logs for a while
       - postcfg_logs:/var/log/ansible
 
   postcfg-dh--sslh:
