@@ -159,7 +159,44 @@
     #   become: true
     #   lineinfile: dest=/etc/hosts regexp='^127\.0\.0\.1' line='127.0.0.1 {{ inventory_hostname }}' owner=root group=root mode=0644
 
-- name: Docker drivers
+- name: "SSLH setup"
+  hosts: all
+  gather_facts: False
+  tasks:
+
+    - name: install PIP
+      become: true
+      apt:
+        name: python-pip
+        state: latest
+
+    - name: PIP docker
+      become: true
+      command: pip install --upgrade docker-py docker-compose
+
+    - name: "SSLH: run it"
+      become: true
+      docker_container:
+        name:  sslh--public
+
+        image: "amondit/sslh"
+        network_mode: host
+        published_ports:
+          - "443:443"
+        # env:
+        #   # LISTEN_IP:   "0.0.0.0"
+        #   # LISTEN_PORT: "443"
+        #   # SSH_HOST: "localhost"
+        #   SSH_PORT: "{{ sslh__local_ports.ssh |default('22') }}"
+        #   # OPENVPN_HOST: "localhost"
+        #   OPENVPN_PORT: "{{ sslh__local_ports.ssh |default('1194') }}"
+        #   # HTTPS_HOST: "localhost"
+        #   HTTPS_PORT: "{{ sslh__local_ports.ssh |default('8443') }}"
+        pull: true
+        state: started
+        restart_policy: "always"
+
+- name: "Docker drivers"
   hosts: all
   gather_facts: False
   vars:

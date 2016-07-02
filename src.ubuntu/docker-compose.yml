@@ -2,7 +2,7 @@
 version: '2'
 
 services:
-  postcfg-dh-drv--vol:
+  postcfg-docker-host:
     build: .
 
     image: highskillz/docker-postcfg-dm-host
@@ -22,17 +22,6 @@ services:
 
       # persists the logs for a while
       - postcfg_logs:/var/log/ansible
-
-  postcfg-dh--sslh:
-    image: amondit/sslh
-    # environment:
-    #     SSH_PORT:      60022
-    # #    SSH_PORT:         22
-    # #    HTTPS_PORT:     8443
-    # #    OPENVPN_PORT:   1194
-    network_mode: "host"
-    ports:
-      - "443:443"
 
 volumes:
   # we want to persist the logs
