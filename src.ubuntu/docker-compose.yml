@@ -6,7 +6,6 @@ services:
     build: .
 
     image: highskillz/docker-postcfg-dm-host
-    image: highskillz/docker-postcfg-dm-host:${TAG_VERSION}
 
     container_name: postcfg-dm-host   # prevent scaling out
 
