@@ -174,11 +174,22 @@
       become: true
       command: pip install --upgrade docker-py docker-compose
 
+    - name: "HAVEGEd: run it"
+      # docker run -d --privileged harbur/haveged
+      become: true
+      docker_container:
+        name:  "ez--haveged"
+        image: "harbur/haveged"
+        # cat /proc/sys/kernel/random/entropy_avail
+        privileged: true
+        pull: true
+        state: started
+        restart_policy: "always"
+
     - name: "SSLH: run it"
       become: true
       docker_container:
-        name:  sslh--public
-
+        name:  "ez--sslh"
         image: "amondit/sslh"
         network_mode: host
         published_ports:
