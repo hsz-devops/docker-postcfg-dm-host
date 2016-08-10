@@ -1,5 +1,5 @@
-FROM highskillz/ops-base:alpine
-#FROM highskillz/ops-base:ubuntu
+#FROM highskillz/ops-base:alpine
+FROM highskillz/ops-base:ubuntu
 
 # based on:
 #   https://github.com/nathanleclaire/dockerfiles/tree/master/ansible

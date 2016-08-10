@@ -159,21 +159,10 @@
     #   become: true
     #   lineinfile: dest=/etc/hosts regexp='^127\.0\.0\.1' line='127.0.0.1 {{ inventory_hostname }}' owner=root group=root mode=0644
 
-- name: "SSLH setup"
+- name: "HAVEGEd setup (entropy generator)"
   hosts: all
   gather_facts: False
   tasks:
-
-    - name: install PIP
-      become: true
-      apt:
-        name: python-pip
-        state: latest
-
-    - name: PIP docker
-      become: true
-      command: pip install --upgrade docker-py docker-compose
-
     - name: "HAVEGEd: run it"
       # docker run -d --privileged harbur/haveged
       become: true
@@ -185,6 +174,21 @@
         pull: true
         state: started
         restart_policy: "always"
+
+- name: "SSLH setup"
+  hosts: all
+  gather_facts: False
+  tasks:
+
+    - name: "SSLH: install PIP"
+      become: true
+      apt:
+        name: python-pip
+        state: latest
+
+    - name: "SSLH: PIP docker"
+      become: true
+      command: pip install --upgrade docker-py docker-compose
 
     - name: "SSLH: run it"
       become: true

@@ -5,7 +5,7 @@ services:
   postcfg-docker-host:
     build: .
 
-    image: highskillz/docker-postcfg-dm-host
+    image: ez123/postcfg-dm-host
 
     container_name: postcfg-dm-host   # prevent scaling out
 
