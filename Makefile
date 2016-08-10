@@ -1,6 +1,6 @@
 # v2.1.1    2016-06-28     joaocc-dev@live.com
 
-TAG_VERSION=160701m
+TAG_VERSION=160810a
 
 # these 2 vars must match the content of docker-compose.yml
 DH_ID=highskillz/docker-postcfg-dm-host
