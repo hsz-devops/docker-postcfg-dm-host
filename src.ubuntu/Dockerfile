@@ -1,4 +1,4 @@
-#FROM ez123/ops-base:alpine34
+#FROM ez123/ops-base:alpine
 FROM ez123/ops-base:ubuntu1604
 
 # based on:
