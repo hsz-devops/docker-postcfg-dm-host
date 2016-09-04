@@ -7,7 +7,7 @@ DH_ID=highskillz/docker-postcfg-dm-host
 DC_SVC=postcfg-docker-host
 
 THIS_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-TIMESTAMP=$(shell date +"%Y%m%d_%H%M%S")
+TIMESTAMP=$(shell date -u +"%Y%m%d_%H%M%S%Z")
 
 default:
 
